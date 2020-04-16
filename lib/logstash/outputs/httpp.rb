@@ -6,7 +6,7 @@ require "uri"
 require "logstash/plugin_mixins/http_client"
 require "zlib"
 
-class LogStash::Outputs::Http < LogStash::Outputs::Base
+class LogStash::Outputs::Httpp < LogStash::Outputs::Base
   include LogStash::PluginMixins::HttpClient
 
   concurrency :shared
