@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name            = 'logstash-output-http'
+  s.name            = 'logstash-output-httpp'
   s.version         = '5.2.4'
   s.licenses        = ['Apache License (2.0)']
   s.summary         = "Sends events to a generic HTTP or HTTPS endpoint"

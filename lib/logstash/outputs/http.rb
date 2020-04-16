@@ -34,7 +34,7 @@ class LogStash::Outputs::Http < LogStash::Outputs::Base
   #
   # Beware, this gem does not yet support codecs. Please use the 'format' option for now.
 
-  config_name "http"
+  config_name "httpp"
 
   # URL to use
   config :url, :validate => :string, :required => :true
@@ -137,11 +137,11 @@ class LogStash::Outputs::Http < LogStash::Outputs::Base
     end
   end
 
-  def log_retryable_response(response)
+  def log_retryable_response(response, request_body)
     if (response.code == 429)
       @logger.debug? && @logger.debug("Encountered a 429 response, will retry. This is not serious, just flow control via HTTP")
     else
-      @logger.warn("Encountered a retryable HTTP request in HTTP output, will retry", :code => response.code, :body => response.body)
+      @logger.warn("Encountered a retryable HTTP request in HTTP output, will retry", :code => response.code, :body => response.body, request_body: request_body)
     end
   end
 
@@ -240,7 +240,7 @@ class LogStash::Outputs::Http < LogStash::Outputs::Base
 
     if !response_success?(response)
       if retryable_response?(response)
-        log_retryable_response(response)
+        log_retryable_response(response, body)
         return :retry, event, attempt
       else
         log_error_response(response, url, event)
