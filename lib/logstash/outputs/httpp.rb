@@ -239,13 +239,8 @@ class LogStash::Outputs::Httpp < LogStash::Outputs::Base
     response = client.send(@http_method, url, :body => body, :headers => headers).call
 
     if !response_success?(response)
-      if retryable_response?(response)
-        log_retryable_response(response, body)
-        return :retry, event, attempt
-      else
-        log_error_response(response, url, event)
-        return :failure, event, attempt
-      end
+      log_error_response(response, url, event)
+      return :failure, event, attempt
     else
       return :success, event, attempt
     end
